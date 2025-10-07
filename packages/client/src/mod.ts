@@ -19,7 +19,7 @@
  * ```
  */
 
-export { createClient, RequestClient } from './client.ts';
+export { createClient, RequestClient } from './request.client.ts';
 export type { RequestConfig, RequestResponse } from './types.ts';
 export { RequestError } from './types.ts';
 export {

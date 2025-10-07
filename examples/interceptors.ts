@@ -4,7 +4,7 @@
  * Run with: deno run --allow-net examples/interceptors.ts
  */
 
-import { createClient } from '../src/mod.ts';
+import { createClient } from '@scope/packages/client';
 
 const client = createClient({
   baseURL: 'https://jsonplaceholder.typicode.com',
@@ -12,7 +12,7 @@ const client = createClient({
 
 // Add a request interceptor
 client.interceptors.request.use((config) => {
-  console.log('→ Request interceptor:', config.url);
+  console.log('→ Request interceptor:', config.baseURL);
   // Add a timestamp header
   config.headers = {
     ...config.headers,
@@ -39,6 +39,6 @@ try {
   const response = await client.get('/posts/1');
   console.log('\nSuccess! Status:', response.status);
   console.log('Headers sent:', response.config.headers);
-} catch (error) {
-  console.error('Failed:', error.message);
+} catch (error: any) {
+  console.error('Failed:', error?.message);
 }

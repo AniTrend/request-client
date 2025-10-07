@@ -1,5 +1,5 @@
-import type { RequestConfig, RequestResponse } from './types.ts';
-import { RequestError } from './types.ts';
+import type { RequestConfig, RequestResponse } from '../src/types.ts';
+import { RequestError } from '../src/types.ts';
 
 /**
  * Request interceptor function

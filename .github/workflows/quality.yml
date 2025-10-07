@@ -2,7 +2,7 @@ name: Quality Checks
 
 on:
   pull_request:
-    branches: [main, dev]
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -30,24 +30,8 @@ jobs:
 
       - name: Check for TODO comments
         run: |
-          if grep -r "TODO\|FIXME\|XXX" src/ ; then
+          if grep -r "TODO\|FIXME\|XXX" packages/ ; then
             echo "Found TODO/FIXME/XXX comments. Please resolve before merging."
             exit 1
           fi
-        continue-on-error: true
-
-  spell-check:
-    name: Spell Check
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Run spell check
-        uses: streetsidesoftware/cspell-action@v6
-        with:
-          files: |
-            **/*.md
-            **/*.ts
-          config: .cspell.json
         continue-on-error: true

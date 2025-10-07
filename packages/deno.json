@@ -1,0 +1,8 @@
+{
+  "extends": "../deno.json",
+  "name": "@scope/packages",
+  "exports": {
+    "./client": "./client/src/mod.ts",
+    "./utils": "./utils/src/mod.ts"
+  }
+}

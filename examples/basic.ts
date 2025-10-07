@@ -4,7 +4,7 @@
  * Run with: deno run --allow-net examples/basic.ts
  */
 
-import { createClient } from '../src/mod.ts';
+import { createClient } from '@scope/packages/client';
 
 // Create a simple client
 const client = createClient();
@@ -17,8 +17,8 @@ try {
   );
   console.log('Status:', response.status);
   console.log('Data:', response.data);
-} catch (error) {
-  console.error('Error:', error.message);
+} catch (error: any) {
+  console.error('Error:', error?.message);
 }
 
 // Create a client with base URL and headers
@@ -41,8 +41,8 @@ try {
   });
   console.log('Status:', newPost.status);
   console.log('Created post:', newPost.data);
-} catch (error) {
-  console.error('Error:', error.message);
+} catch (error: any) {
+  console.error('Error:', error?.message);
 }
 
 // Using query parameters
@@ -55,6 +55,6 @@ try {
   });
   console.log('Status:', posts.status);
   console.log('Found posts:', Array.isArray(posts.data) ? posts.data.length : 0);
-} catch (error) {
-  console.error('Error:', error.message);
+} catch (error: any) {
+  console.error('Error:', error?.message);
 }

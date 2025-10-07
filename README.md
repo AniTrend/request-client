@@ -1,4 +1,4 @@
-# request-client
+# Request Client
 
 A tiny, dependency-free, axios-style fetch wrapper for Deno
 
@@ -20,13 +20,23 @@ A tiny, dependency-free, axios-style fetch wrapper for Deno
 ### From JSR (Recommended)
 
 ```typescript
-import { createClient } from 'jsr:@anitrend/request-client';
+import { createClient } from 'jsr:@anitrend/request-client@^0.1.0';
 ```
 
-### From deno.land
+### Add to deno.json
+
+```json
+{
+  "imports": {
+    "@anitrend/request-client": "jsr:@anitrend/request-client@^0.1.0"
+  }
+}
+```
+
+Then import in your code:
 
 ```typescript
-import { createClient } from 'https://deno.land/x/request_client/src/mod.ts';
+import { createClient } from '@anitrend/request-client';
 ```
 
 ## Quick Start
@@ -189,24 +199,32 @@ interface RequestResponse<T = unknown> {
 ### Running Tests
 
 ```bash
-deno task test
+# Run unit tests
+deno task test:unit
+
+# Run specification tests
+deno task test:spec
+
+# Watch mode
+deno task test:watch
+
+# Generate coverage report
+deno task coverage
 ```
 
-### Linting
+### Code Quality
 
 ```bash
+# Linting
 deno task lint
-```
 
-### Formatting
-
-```bash
+# Formatting
 deno task fmt
-```
 
-### Type Checking
+# Check formatting
+deno task fmt:check
 
-```bash
+# Type checking
 deno task check
 ```
 
@@ -215,5 +233,18 @@ deno task check
 Contributions are welcome! Please read our [Code of Conduct](CODE_OF_CONDUCT.md) before contributing.
 
 ## License
+```
+   Copyright 2025 AniTrend
 
-Apache-2.0 License - see the [LICENSE](LICENSE) file for details
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+```
