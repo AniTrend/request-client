@@ -1,0 +1,38 @@
+{
+  "$schema": "https://deno.land/x/deno/cli/schemas/config-file.v1.json",
+  "name": "@anitrend/request-client",
+  "version": "0.1.0",
+  "exports": "./src/mod.ts",
+  "lint": {
+    "include": ["src/"],
+    "exclude": [".github/", "README.md", "build/", "coverage/"],
+    "rules": {
+      "tags": ["recommended"]
+    }
+  },
+  "fmt": {
+    "include": ["src/"],
+    "exclude": [".github/", "README.md", "build/", "coverage/"],
+    "useTabs": false,
+    "lineWidth": 80,
+    "indentWidth": 2,
+    "singleQuote": true,
+    "proseWrap": "preserve"
+  },
+  "tasks": {
+    "check": "deno check src/mod.ts",
+    "test": "deno test --allow-net --coverage=coverage",
+    "test:watch": "deno test --allow-net --watch",
+    "lint": "deno lint",
+    "fmt": "deno fmt",
+    "fmt:check": "deno fmt --check",
+    "coverage": "deno coverage coverage --lcov --output=coverage/lcov.info"
+  },
+  "test": {
+    "include": ["src/**/*_test.ts", "tests/**/*_test.ts"]
+  },
+  "publish": {
+    "include": ["src/", "README.md", "LICENSE", "jsr.json"],
+    "exclude": ["**/*_test.ts", "**/*.test.ts"]
+  }
+}
