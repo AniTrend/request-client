@@ -22,13 +22,18 @@ jobs:
       resolved_version: ${{ steps.draft_release.outputs.resolved_version }}
       tag_name: ${{ steps.draft_release.outputs.tag_name }}
     steps:
+      - uses: actions/create-github-app-token@v2
+        id: app-token
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
       - name: Draft Release
         id: draft_release
         uses: release-drafter/release-drafter@v6
         with:
           config-name: release-drafter-config.yml
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
 
   update_package_version:
     name: Update Package Version
@@ -39,6 +44,11 @@ jobs:
       contents: write
       pull-requests: write
     steps:
+      - uses: actions/create-github-app-token@v2
+        id: app-token
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
       - name: Checkout code
         uses: actions/checkout@v5
         with:
@@ -98,7 +108,7 @@ jobs:
         if: steps.version_check.outputs.needs_update == 'true'
         uses: peter-evans/create-pull-request@v7
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ steps.app-token.outputs.token }}
           commit-message: "chore: bump version to ${{ needs.update_release_draft.outputs.resolved_version }}"
           title: "chore: bump version to ${{ needs.update_release_draft.outputs.resolved_version }}"
           body: |
