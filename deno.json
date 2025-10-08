@@ -4,15 +4,31 @@
   "version": "0.1.0",
   "exports": "./packages/client/src/mod.ts",
   "lint": {
-    "include": ["packages/"],
-    "exclude": [".github/", "README.md", "build/", "coverage/"],
+    "include": [
+      "packages/"
+    ],
+    "exclude": [
+      ".github/",
+      "README.md",
+      "build/",
+      "coverage/"
+    ],
     "rules": {
-      "tags": ["recommended"]
+      "tags": [
+        "recommended"
+      ]
     }
   },
   "fmt": {
-    "include": ["packages/"],
-    "exclude": [".github/", "README.md", "build/", "coverage/"],
+    "include": [
+      "packages/"
+    ],
+    "exclude": [
+      ".github/",
+      "README.md",
+      "build/",
+      "coverage/"
+    ],
     "useTabs": false,
     "lineWidth": 80,
     "indentWidth": 2,
@@ -35,9 +51,14 @@
     }
   },
   "test": {
-    "include": ["spec/**/*.test.ts", "spec/**/*.spec.ts"],
+    "include": [
+      "spec/**/*.test.ts",
+      "spec/**/*.spec.ts"
+    ],
     "permissions": {
-      "net": ["jsonplaceholder.typicode.com"]
+      "net": [
+        "jsonplaceholder.typicode.com"
+      ]
     }
   },
   "publish": {
