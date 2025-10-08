@@ -122,6 +122,13 @@ jobs:
       - name: Notify failure
         if: needs.publish.result == 'failure'
         run: |
-          echo "Deployment failed!"
-          echo "Please check the deployment logs and try again."
+          echo "::error::Deployment failed!"
+          echo "Job result: ${{ needs.publish.result }}"
+          echo "Commit: ${{ github.sha }}"
+          echo "Timestamp: $(date -u)"
+          echo ""
+          echo "Failure details:"
+          echo "- Check the publish job logs at: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          echo "- Review the 'Publish to JSR' step for specific error messages"
+          echo "- Common causes: authentication issues, version conflicts, or validation errors"
           exit 1
