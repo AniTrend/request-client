@@ -1,10 +1,6 @@
 import { assertEquals, assertExists } from '@std/assert';
 import { describe, it } from '@std/testing/bdd';
-import {
-  createClient,
-  RequestClient,
-  RequestError,
-} from '@scope/packages/client';
+import { createClient, RequestClient, RequestError } from '@scope/packages';
 
 describe('RequestClient Spec', () => {
   describe('createClient', () => {
