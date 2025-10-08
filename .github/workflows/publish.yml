@@ -101,11 +101,11 @@ jobs:
 
       - name: Dry run publish
         if: github.event_name == 'workflow_dispatch' && github.event.inputs.dry-run == 'true'
-        run: deno publish --dry-run
+        run: deno publish --dry-run --provenance
 
       - name: Publish to JSR
         if: github.event_name == 'release' || (github.event_name == 'workflow_dispatch' && github.event.inputs.dry-run == 'false')
-        run: deno publish
+        run: deno publish --provenance
 
   notify:
     name: Notify Deployment
