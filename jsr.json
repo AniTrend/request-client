@@ -1,5 +1,28 @@
 {
   "name": "@anitrend/request-client",
   "version": "0.1.0",
-  "exports": "./packages/client/src/mod.ts"
+  "exports": "./packages/client/src/mod.ts",
+  "description": "A tiny, dependency-free, axios-style fetch wrapper for Deno with TypeScript support",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AniTrend/request-client.git"
+  },
+  "bugs": {
+    "url": "https://github.com/AniTrend/request-client/issues"
+  },
+  "homepage": "https://github.com/AniTrend/request-client#readme",
+  "keywords": [
+    "fetch",
+    "http",
+    "client",
+    "axios",
+    "request",
+    "rest",
+    "api",
+    "deno",
+    "typescript",
+    "interceptors",
+    "promise"
+  ]
 }
