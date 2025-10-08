@@ -2,7 +2,7 @@ name: Publish to JSR
 
 on:
   release:
-    types: [created]
+    types: [published]
   workflow_dispatch:
     inputs:
       dry-run:
@@ -117,7 +117,7 @@ jobs:
         if: needs.publish.result == 'success'
         run: |
           {
-            echo "## ✅ Deployment Successful"
+            echo "## Deployment Successful"
             echo ""
             echo "The package has been successfully published to JSR!"
             echo ""
@@ -132,7 +132,7 @@ jobs:
             echo "- Check the [publish job logs](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details"
           } >> $GITHUB_STEP_SUMMARY
 
-          echo "✅ Deployed successfully!"
+          echo "Deployed successfully!"
           echo "Commit: ${{ github.sha }}"
           echo "Timestamp: $(date -u)"
 
@@ -140,7 +140,7 @@ jobs:
         if: needs.publish.result == 'failure'
         run: |
           {
-            echo "## ❌ Deployment Failed"
+            echo "## Deployment Failed"
             echo ""
             echo "The package publication to JSR failed."
             echo ""
