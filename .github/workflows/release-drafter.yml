@@ -15,7 +15,6 @@ jobs:
   update_release_draft:
     name: Update Release Draft
     runs-on: ubuntu-latest
-    if: github.event_name == 'push'
     permissions:
       contents: write
       pull-requests: write
@@ -86,6 +85,15 @@ jobs:
             mv deno.json.tmp deno.json
           fi
 
+      - name: Update packages/deno.json version
+        if: steps.version_check.outputs.needs_update == 'true'
+        run: |
+          NEW_VERSION="${{ needs.update_release_draft.outputs.resolved_version }}"
+          if [ -f packages/deno.json ] && jq -e '.version' packages/deno.json > /dev/null 2>&1; then
+            jq --arg version "$NEW_VERSION" '.version = $version' packages/deno.json > packages/deno.json.tmp
+            mv packages/deno.json.tmp packages/deno.json
+          fi
+
       - name: Create Pull Request
         if: steps.version_check.outputs.needs_update == 'true'
         uses: peter-evans/create-pull-request@v7
@@ -101,6 +109,7 @@ jobs:
             ### Changes
             - Updated `jsr.json` version to `${{ needs.update_release_draft.outputs.resolved_version }}`
             - Updated `deno.json` version (if present)
+            - Updated `packages/deno.json` version (if present)
 
             ### Related
             - Release Tag: `${{ needs.update_release_draft.outputs.tag_name }}`
