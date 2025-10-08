@@ -183,3 +183,39 @@ When changing public API:
 2. Update README.md API Reference section
 3. Update relevant example in `examples/`
 4. Update ARCHITECTURE.md if structural change
+
+## JSR Publishing Requirements
+
+Maintain high JSR score (target: 95%+). Reference: https://jsr.io/docs/scoring
+
+### Critical Rules
+
+1. **Always use provenance**: `deno publish --provenance` in CI/CD
+2. **No slow types**: Export types explicitly: `export type { Foo } from './types.ts'`
+3. **Complete JSDoc**: All public APIs must have JSDoc with `@example` blocks
+4. **Single config source**: Only root `deno.json` should have `name` and `version` fields
+5. **Test before publish**: Run `deno publish --dry-run` + all tests before any release
+
+### Required Metadata (jsr.json)
+
+- `description`: Clear one-liner
+- `keywords`: Array of relevant search terms
+- `repository`: GitHub URL with `git+https://` prefix
+- `license`: "Apache-2.0"
+- `bugs` and `homepage`: GitHub URLs
+
+### Publish Configuration (deno.json)
+
+```json
+"publish": {
+  "include": ["packages/client/src/", "README.md", "LICENSE", "jsr.json", "deno.json"]
+}
+```
+
+### Documentation Requirements
+
+- Module-level `@module` JSDoc in `mod.ts`
+- Runtime compatibility section in README (Deno, Node.js 18+, Bun)
+- Examples for each major feature
+- API reference with all public types/functions
+
