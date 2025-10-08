@@ -1,0 +1,113 @@
+name: Runtime Compatibility
+
+on:
+  schedule:
+    - cron: "0 0 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test-deno:
+    name: Test with Deno
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        deno-version: [2.5]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: ${{ matrix.deno-version }}
+          cache: true
+
+      - name: Run tests
+        run: |
+          deno task test:unit
+          deno task test:spec
+
+  test-nodejs:
+    name: Test with Node.js (JSR import)
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        node-version: ["22", "24"]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Create test package
+        working-directory: /tmp
+        run: |
+          mkdir -p test-package
+          cd test-package
+          npm init -y
+          npx jsr add @anitrend/request-client
+
+      - name: Run Node.js compatibility test
+        working-directory: /tmp/test-package
+        run: |
+          cp ${{ github.workspace }}/examples/node-compatibility.mjs .
+          node node-compatibility.mjs
+
+  test-bun:
+    name: Test with Bun (JSR import)
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        bun-version: [1.2]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ matrix.bun-version }}
+
+      - name: Create test package
+        working-directory: /tmp
+        run: |
+          mkdir -p test-package
+          cd test-package
+          bun init -y
+          bunx jsr add @anitrend/request-client
+
+      - name: Run Bun compatibility test
+        working-directory: /tmp/test-package
+        run: |
+          cp ${{ github.workspace }}/examples/node-compatibility.mjs ./test.mjs
+          bun run test.mjs
+
+  summary:
+    name: Compatibility Summary
+    runs-on: ubuntu-latest
+    needs: [test-deno, test-nodejs, test-bun]
+    if: always()
+    steps:
+      - name: Generate summary
+        run: |
+          echo "## Runtime Compatibility Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Runtime | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|---------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Deno | ${{ needs.test-deno.result == 'success' && '✅ Pass' || needs.test-deno.result == 'skipped' && '⏭️ Skipped' || '❌ Fail' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Node.js | ${{ needs.test-nodejs.result == 'success' && '✅ Pass' || needs.test-nodejs.result == 'skipped' && '⏭️ Skipped' || '❌ Fail' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Bun | ${{ needs.test-bun.result == 'success' && '✅ Pass' || needs.test-bun.result == 'skipped' && '⏭️ Skipped' || '❌ Fail' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Note:** Node.js and Bun tests require the package to be published to JSR." >> $GITHUB_STEP_SUMMARY
