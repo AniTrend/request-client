@@ -40,6 +40,56 @@ Then import in your code:
 import { createClient } from '@anitrend/request-client';
 ```
 
+## Runtime Compatibility
+
+This package is built for **Deno** and published via **JSR** (JavaScript Registry).
+
+### ✅ Deno (Primary Target)
+
+Fully supported with zero dependencies. Uses native Fetch API.
+
+```typescript
+import { createClient } from 'jsr:@anitrend/request-client@^0.1.0';
+```
+
+### ✅ Node.js (via JSR)
+
+Compatible with Node.js 18+ through JSR's npm compatibility layer:
+
+```bash
+# Using npm
+npx jsr add @anitrend/request-client
+
+# Using yarn
+yarn dlx jsr add @anitrend/request-client
+
+# Using pnpm
+pnpm dlx jsr add @anitrend/request-client
+```
+
+Then import in your Node.js code:
+
+```javascript
+import { createClient } from '@anitrend/request-client';
+```
+
+### ✅ Bun
+
+Compatible with Bun through JSR:
+
+```bash
+bunx jsr add @anitrend/request-client
+```
+
+### 🔄 Other Runtimes
+
+Any JavaScript runtime that supports:
+- Native Fetch API
+- ES Modules
+- TypeScript (optional)
+
+Should work with this package. Compatibility may vary based on the runtime's Fetch API implementation.
+
 ## Quick Start
 
 ### Basic Usage
