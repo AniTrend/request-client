@@ -38,8 +38,8 @@
     }
   },
   "publish": {
-    "include": ["packages/**/src", "README.md", "LICENSE", "jsr.json"],
-    "exclude": ["**/*_test.ts", "**/*.test.ts"]
+    "include": ["packages/**/src/**/*.ts", "README.md", "LICENSE", "jsr.json"],
+    "exclude": ["**/*_test.ts", "**/*.test.ts", "packages/**/spec"]
   },
   "imports": {
     "@c4spar/mock-fetch": "jsr:@c4spar/mock-fetch@^1.0.0",

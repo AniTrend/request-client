@@ -1,8 +1,8 @@
 import { afterEach, beforeEach, describe, it } from '@std/testing/bdd';
 import { assertEquals, assertRejects } from '@std/assert';
 import { mockFetch, resetFetch } from '@c4spar/mock-fetch';
-import { bytes, json, text } from '@scope/packages/utils';
-import { createClient } from '@scope/packages/client';
+import { createClient } from '@scope/packages';
+import { bytes, json, text } from './mock.helper.ts';
 
 describe('RequestClient', () => {
   beforeEach(() => resetFetch());

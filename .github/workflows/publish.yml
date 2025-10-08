@@ -116,12 +116,56 @@ jobs:
       - name: Notify success
         if: needs.publish.result == 'success'
         run: |
-          echo "Deployed successfully!"
+          {
+            echo "## ✅ Deployment Successful"
+            echo ""
+            echo "The package has been successfully published to JSR!"
+            echo ""
+            echo "### Deployment Details"
+            echo "- **Status**: Success"
+            echo "- **Commit**: \`${{ github.sha }}\`"
+            echo "- **Timestamp**: $(date -u)"
+            echo "- **Workflow Run**: [${{ github.run_id }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})"
+            echo ""
+            echo "### What's Next?"
+            echo "- View the package on JSR: [https://jsr.io/@anitrend/request-client](https://jsr.io/@anitrend/request-client)"
+            echo "- Check the [publish job logs](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details"
+          } >> $GITHUB_STEP_SUMMARY
+
+          echo "✅ Deployed successfully!"
           echo "Commit: ${{ github.sha }}"
           echo "Timestamp: $(date -u)"
+
       - name: Notify failure
         if: needs.publish.result == 'failure'
         run: |
-          echo "Deployment failed!"
-          echo "Please check the deployment logs and try again."
+          {
+            echo "## ❌ Deployment Failed"
+            echo ""
+            echo "The package publication to JSR failed."
+            echo ""
+            echo "### Failure Details"
+            echo "- **Status**: Failed"
+            echo "- **Job Result**: \`${{ needs.publish.result }}\`"
+            echo "- **Commit**: \`${{ github.sha }}\`"
+            echo "- **Timestamp**: $(date -u)"
+            echo ""
+            echo "### Troubleshooting Steps"
+            echo "1. [Check the publish job logs](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})"
+            echo "2. Review the 'Publish to JSR' step for specific error messages"
+            echo "3. Common causes:"
+            echo "   - Authentication issues (check OIDC token permissions)"
+            echo "   - Version conflicts (version may already exist on JSR)"
+            echo "   - Validation errors (check package configuration)"
+            echo "   - Network issues or JSR service availability"
+            echo ""
+            echo "### Quick Links"
+            echo "- [Workflow Run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})"
+            echo "- [JSR Documentation](https://jsr.io/docs)"
+          } >> $GITHUB_STEP_SUMMARY
+
+          echo "::error::Deployment failed!"
+          echo "Job result: ${{ needs.publish.result }}"
+          echo "Commit: ${{ github.sha }}"
+          echo "Timestamp: $(date -u)"
           exit 1
