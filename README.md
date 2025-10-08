@@ -3,6 +3,7 @@
 A tiny, dependency-free, axios-style fetch wrapper for Deno
 
 [![JSR](https://jsr.io/badges/@anitrend/request-client)](https://jsr.io/@anitrend/request-client)
+[![JSR Score](https://jsr.io/badges/@anitrend/request-client/score)](https://jsr.io/@anitrend/request-client)
 [![CI](https://github.com/AniTrend/request-client/actions/workflows/ci.yml/badge.svg)](https://github.com/AniTrend/request-client/actions/workflows/ci.yml)
 
 ## Features
