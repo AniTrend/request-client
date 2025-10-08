@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, it } from '@std/testing/bdd';
 import { assertEquals, assertRejects } from '@std/assert';
 import { mockFetch, resetFetch } from '@c4spar/mock-fetch';
-import { createClient } from '@scope/packages';
+import { createClient } from '@anitrend/request-client';
 import { bytes, json, text } from './mock.helper.ts';
 
 describe('RequestClient', () => {

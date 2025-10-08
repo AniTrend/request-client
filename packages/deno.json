@@ -1,6 +1,0 @@
-{
-  "extends": "../deno.json",
-  "name": "@scope/packages",
-  "version": "0.1.0",
-  "exports": "./client/src/mod.ts"
-}

@@ -1,6 +1,10 @@
 import { assertEquals, assertExists } from '@std/assert';
 import { describe, it } from '@std/testing/bdd';
-import { createClient, RequestClient, RequestError } from '@scope/packages';
+import {
+  createClient,
+  RequestClient,
+  RequestError,
+} from '@anitrend/request-client';
 
 describe('RequestClient Spec', () => {
   describe('createClient', () => {
