@@ -1,6 +1,6 @@
 {
   "name": "@anitrend/request-client",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "exports": "./packages/client/src/mod.ts",
   "description": "A tiny, dependency-free, axios-style fetch wrapper for Deno with TypeScript support",
   "license": "Apache-2.0",
