@@ -9,14 +9,30 @@ permissions:
   contents: read
 
 jobs:
+  detect-changes:
+    name: Detect repository changes (last 7 days)
+    runs-on: ubuntu-latest
+    outputs:
+      has_changes: ${{ steps.diff.outputs.has_changes }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - id: diff
+        name: Check for recent changes
+        run: |
+          if [ "$(git rev-list --count --since='7 days ago' HEAD)" -gt 0 ]; then
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+          fi
+
   test-deno:
     name: Test with Deno
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, macos-latest]
-        deno-version: [2.5]
+    needs: detect-changes
+    if: needs.detect-changes.outputs.has_changes == 'true'
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
@@ -24,7 +40,7 @@ jobs:
       - name: Setup Deno
         uses: denoland/setup-deno@v2
         with:
-          deno-version: ${{ matrix.deno-version }}
+          deno-version: 2.5.6
           cache: true
 
       - name: Run tests
@@ -34,12 +50,9 @@ jobs:
 
   test-nodejs:
     name: Test with Node.js (JSR import)
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, macos-latest]
-        node-version: ["22", "24"]
+    needs: detect-changes
+    if: needs.detect-changes.outputs.has_changes == 'true'
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
@@ -47,7 +60,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 24.11
 
       - name: Create test package
         working-directory: /tmp
@@ -65,12 +78,9 @@ jobs:
 
   test-bun:
     name: Test with Bun (JSR import)
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, macos-latest]
-        bun-version: [1.2]
+    needs: detect-changes
+    if: needs.detect-changes.outputs.has_changes == 'true'
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
@@ -78,7 +88,7 @@ jobs:
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
-          bun-version: ${{ matrix.bun-version }}
+          bun-version: 1.2
 
       - name: Create test package
         working-directory: /tmp
@@ -97,10 +107,17 @@ jobs:
   summary:
     name: Compatibility Summary
     runs-on: ubuntu-latest
-    needs: [test-deno, test-nodejs, test-bun]
+    needs: [detect-changes, test-deno, test-nodejs, test-bun]
     if: always()
     steps:
+      - name: No changes — skipped heavy jobs
+        if: needs.detect-changes.outputs.has_changes != 'true'
+        run: |
+          echo "## Runtime Compatibility Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "No repository changes in the last 7 days. Skipping compatibility tests." >> $GITHUB_STEP_SUMMARY
       - name: Generate summary
+        if: needs.detect-changes.outputs.has_changes == 'true'
         run: |
           echo "## Runtime Compatibility Test Results" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
