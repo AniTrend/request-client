@@ -132,7 +132,10 @@ describe('RequestClient', () => {
     const originalFetch = globalThis.fetch;
     const api = createClient({ timeout: 20 });
     try {
-      globalThis.fetch = (_input, init) =>
+      globalThis.fetch = (
+        _input: RequestInfo | URL,
+        init?: RequestInit & { signal?: AbortSignal | null },
+      ) =>
         new Promise((_resolve, reject) => {
           init?.signal?.addEventListener('abort', () => {
             reject(new DOMException('Timeout', 'TimeoutError'));
