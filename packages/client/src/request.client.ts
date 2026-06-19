@@ -105,7 +105,7 @@ export class RequestClient {
     const method = config.method?.toUpperCase() ?? 'GET';
 
     // Handle timeout
-    let timeoutId: number | undefined;
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
     const controller = new AbortController();
     const signal = requestConfig.signal ?? controller.signal;
 
