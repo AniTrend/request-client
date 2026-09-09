@@ -60,7 +60,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v7.0.0
         with:
-          node-version: 24.19
+          node-version: 24.21
 
       - name: Create test package
         working-directory: /tmp
